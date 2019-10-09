@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         //comecar com falso
         toggle.setChecked(false);
         toggle.setBackgroundDrawable(arrowDown);
-        container.setVisibility(View.GONE);
+        //container.setVisibility(View.GONE);
+        collapse(container);
 
         replaceFragment(R.id.container, fragment);
 
@@ -63,22 +64,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // https://stackoverflow.com/questions/4946295/android-expand-collapse-animation
-    public static void expand(final View v) {
-        int matchParentMeasureSpec = View.MeasureSpec.makeMeasureSpec(((View) v.getParent()).getWidth(), View.MeasureSpec.EXACTLY);
+    public static void expand(final View view) {
+        int matchParentMeasureSpec = View.MeasureSpec.makeMeasureSpec(((View) view.getParent()).getWidth(), View.MeasureSpec.EXACTLY);
         int wrapContentMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        v.measure(matchParentMeasureSpec, wrapContentMeasureSpec);
-        final int targetHeight = v.getMeasuredHeight();
+        view.measure(matchParentMeasureSpec, wrapContentMeasureSpec);
+        final int targetHeight = view.getMeasuredHeight();
 
         // Older versions of android (pre API 21) cancel animations for views with a height of 0.
-        v.getLayoutParams().height = 1;
-        v.setVisibility(View.VISIBLE);
-        Animation a = new Animation() {
+        view.getLayoutParams().height = 1;
+        view.setVisibility(View.VISIBLE);
+        Animation animation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1
+                view.getLayoutParams().height = interpolatedTime == 1
                         ? LinearLayout.LayoutParams.WRAP_CONTENT
-                        : (int) (targetHeight * interpolatedTime);
-                v.requestLayout();
+                        : Math.max(1, (int) (targetHeight * interpolatedTime));
+
+                view.requestLayout();
             }
 
             @Override
@@ -88,21 +90,21 @@ public class MainActivity extends AppCompatActivity {
         };
 
         // Expansion speed of 1dp/ms
-        a.setDuration(((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density)) * 4);
-        v.startAnimation(a);
+        animation.setDuration(((int) (targetHeight / view.getContext().getResources().getDisplayMetrics().density)) * 4);
+        view.startAnimation(animation);
     }
 
-    public static void collapse(final View v) {
-        final int initialHeight = v.getMeasuredHeight();
+    public static void collapse(final View view) {
+        final int initialHeight = view.getMeasuredHeight();
 
-        Animation a = new Animation() {
+        Animation animation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 if (interpolatedTime == 1) {
-                    v.setVisibility(View.GONE);
+                    view.setVisibility(View.GONE);
                 } else {
-                    v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
-                    v.requestLayout();
+                    view.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
+                    view.requestLayout();
                 }
             }
 
@@ -113,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
         };
 
         // Collapse speed of 1dp/ms
-        a.setDuration(((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density)) * 4);
-        v.startAnimation(a);
+        animation.setDuration(((int) (initialHeight / view.getContext().getResources().getDisplayMetrics().density)) * 4);
+        view.startAnimation(animation);
     }
 
 }

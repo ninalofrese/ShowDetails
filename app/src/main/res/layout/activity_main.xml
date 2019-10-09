@@ -37,6 +37,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/ic_arrow_down"
+        android:padding="8dp"
         android:textOff=""
         android:textOn=""
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
