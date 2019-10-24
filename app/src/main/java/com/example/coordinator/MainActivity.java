@@ -7,12 +7,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ToggleButton toggle;
     private Fragment fragment = new DetalhesFragment();
     private LinearLayout container;
+    private Button botaoVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         toggle = findViewById(R.id.arrows);
         container = findViewById(R.id.container);
+        botaoVideo = findViewById(R.id.botao_video);
 
         final Drawable arrowDown = getResources().getDrawable(R.drawable.ic_arrow_down);
         final Drawable arrowUp = getResources().getDrawable(R.drawable.ic_arrow_up);
@@ -52,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
                     collapse(container);
                     toggle.setBackgroundDrawable(arrowDown);
                 }
+            }
+        });
+
+        botaoVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, VideoActivity.class));
             }
         });
     }
