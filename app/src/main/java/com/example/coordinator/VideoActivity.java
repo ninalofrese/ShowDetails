@@ -24,13 +24,11 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 public class VideoActivity extends AppCompatActivity {
     private YouTubePlayerView youTubePlayerView;
-    private ImageView closeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //remove barra de título
-        //getSupportActionBar().hide();
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_video);
 
